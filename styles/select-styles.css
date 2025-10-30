@@ -1,0 +1,61 @@
+﻿/* select 박스 스타일 추가 */
+.form-group select {
+    width: 100%;
+    padding: 1rem 1.1rem 1rem 3rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafbfc;
+    color: #2c3e50;
+    box-sizing: border-box;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237f8c8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+}
+
+.form-group select:focus {
+    border-color: #667eea;
+    outline: none;
+    background-color: white;
+    box-shadow: 
+        0 0 0 4px rgba(102, 126, 234, 0.1),
+        0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+.form-group select option {
+    padding: 0.5rem;
+    background-color: white;
+    color: #2c3e50;
+}
+
+/* 생년월일/입사연월일 입력 필드 스타일 */
+.form-group input[type="text"][maxlength="8"] {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+/* 다크 모드에서 select 박스 */
+@media (prefers-color-scheme: dark) {
+    .form-group select {
+        background-color: rgba(52, 73, 94, 0.8);
+        border-color: #4a5f7a;
+        color: white;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bdc3c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+    
+    .form-group select:focus {
+        background-color: rgba(44, 62, 80, 0.9);
+        border-color: #667eea;
+    }
+    
+    .form-group select option {
+        background-color: rgba(44, 62, 80, 0.9);
+        color: white;
+    }
+}
