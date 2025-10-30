@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연차관리 시스템 - 연차승인</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/approval.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <i class="fas fa-calendar-alt"></i>
+      <h1>연차관리 시스템</h1>
+    </div>
+    <nav class="nav">
+      <a href="leave-status.html" class="nav-link"><i class="fas fa-calendar-check"></i> 연차현황</a>
+      <a href="calendar.html" class="nav-link"><i class="fas fa-calendar-alt"></i> 캘린더</a>
+      <a href="main-management.html" class="nav-link"><i class="fas fa-cogs"></i> 메인관리</a>
+      <div class="user-dropdown">
+        <a href="mypage.html" id="profile-link"><i class="fas fa-user" id="navAvatarIcon"></i> 마이페이지</a>
+        <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+      </div>
+    </nav>
+  </div>
+</header>
+<main class="main">
+  <div class="container">
+    <!-- 개선된 페이지 헤더 -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-text">
+          <h2><i class="fas fa-check-circle"></i> 연차 승인</h2>
+          <p>대기/승인/거부 상태를 확인하고 처리하세요</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 개선된 필터 및 액션 섹션 -->
+    <div class="approval-controls">
+      <!-- 일괄 작업 섹션 -->
+      <div class="bulk-actions-section">
+        <div class="bulk-controls">
+          <label class="bulk-checkbox">
+            <input type="checkbox" id="selectAll">
+            <span class="checkbox-label">전체 선택</span>
+          </label>
+          <div class="bulk-buttons">
+            <button id="bulkApprove" class="btn-bulk btn-bulk-approve" disabled>
+              <i class="fas fa-check-double"></i>
+              일괄 승인
+            </button>
+            <button id="bulkReject" class="btn-bulk btn-bulk-reject" disabled>
+              <i class="fas fa-times-circle"></i>
+              일괄 거부
+            </button>
+          </div>
+          <div class="selected-info">
+            <span id="selectedCount" class="selected-count">선택된 항목: 0개</span>
+          </div>
+        </div>
+        
+        <div class="admin-actions">
+          <label for="excelUpload" class="btn btn-secondary">
+            <i class="fas fa-file-excel"></i>
+            엑셀 업로드
+          </label>
+          <input type="file" id="excelUpload" accept=".csv,.xlsx" style="display:none;">
+          <button id="btnDownloadTemplate" class="btn btn-secondary">
+            <i class="fas fa-download"></i>
+            양식 다운로드
+          </button>
+          <button id="btnAddRequest" class="btn btn-primary">
+            <i class="fas fa-user-shield"></i>
+            연차 등록
+          </button>
+        </div>
+      </div>
+
+      <!-- 필터 섹션 -->
+      <div class="filter-section">
+        <div class="filter-group">
+          <div class="filter-item">
+            <label for="searchInput" class="filter-label">
+              <i class="fas fa-search"></i>
+              검색
+            </label>
+            <input type="text" id="searchInput" class="form-input" placeholder="직원명 검색...">
+          </div>
+          
+          <div class="filter-item">
+            <label for="branchFilter" class="filter-label">
+              <i class="fas fa-building"></i>
+              지점
+            </label>
+            <select id="branchFilter" class="form-select">
+              <option value="all">전체 지점</option>
+            </select>
+          </div>
+          
+          <div class="filter-item">
+            <label for="departmentFilter" class="filter-label">
+              <i class="fas fa-users"></i>
+              부서
+            </label>
+            <select id="departmentFilter" class="form-select">
+              <option value="all">전체 부서</option>
+            </select>
+          </div>
+          
+          <div class="filter-item">
+            <label for="statusFilter" class="filter-label">
+              <i class="fas fa-flag"></i>
+              상태
+            </label>
+            <select id="statusFilter" class="form-select">
+              <option value="all">전체 상태</option>
+              <option value="pending">대기중</option>
+              <option value="approved">승인됨</option>
+              <option value="rejected">거부됨</option>
+            </select>
+          </div>
+          
+          <div class="filter-item">
+            <label for="leaveTypeFilter" class="filter-label">
+              <i class="fas fa-calendar"></i>
+              유형
+            </label>
+            <select id="leaveTypeFilter" class="form-select">
+              <option value="all">전체 유형</option>
+              <option value="annual">법정연차</option>
+              <option value="welfare">복지휴가</option>
+            </select>
+          </div>
+          
+          <div class="filter-item">
+            <label for="itemsPerPageFilter" class="filter-label">
+              <i class="fas fa-list"></i>
+              표시
+            </label>
+            <select id="itemsPerPageFilter" class="form-select">
+              <option value="5">5개씩 보기</option>
+              <option value="10" selected>10개씩 보기</option>
+              <option value="20">20개씩 보기</option>
+              <option value="50">50개씩 보기</option>
+              <option value="100">100개씩 보기</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 승인 목록 -->
+    <div id="approvalList" class="approval-list"></div>
+    
+    <!-- 개선된 페이지네이션 -->
+    <div id="pagination" class="pagination" style="display: none;">
+      <div class="pagination-info">
+        <span id="paginationInfo">1-10 / 총 0개</span>
+      </div>
+      <div class="pagination-controls">
+        <button id="prevPage" class="pagination-btn" disabled>
+          <i class="fas fa-chevron-left"></i>
+          이전
+        </button>
+        <div id="pageNumbers" class="page-numbers"></div>
+        <button id="nextPage" class="pagination-btn">
+          다음
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- 간단 모달: 연차 등록 -->
+<div id="adminAddModal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:520px;">
+    <div class="modal-header">
+      <h3>연차 등록</h3>
+      <span class="close" id="adminAddClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="adminAddForm" class="leave-request-form">
+        <div class="form-group">
+          <label for="adm-email">직원 이메일</label>
+          <input type="email" id="adm-email" class="form-input" placeholder="example@company.com" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="adm-start">시작일</label>
+            <input type="date" id="adm-start" required>
+          </div>
+          <div class="form-group">
+            <label for="adm-end">종료일</label>
+            <input type="date" id="adm-end" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="adm-days">일수</label>
+            <input type="number" id="adm-days" min="0.5" step="0.5" placeholder="자동 계산" readonly>
+          </div>
+          <div class="form-group">
+            <label for="adm-type">유형</label>
+            <select id="adm-type" required>
+              <option value="vacation">법정연차</option>
+              <option value="welfare-vacation">복지휴가</option>
+              <option value="personal">개인사정</option>
+              <option value="sick">병가</option>
+              <option value="other">기타</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" id="adm-reason-group">
+          <label for="adm-reason">사유(기타 선택 시)</label>
+          <textarea id="adm-reason" rows="3" placeholder="사유 입력"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="adminAddCancel">취소</button>
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/nav-permission.js"></script>
+<script src="js/data-manager.js"></script>
+<script src="js/approval.js"></script>
+</body>
+</html>

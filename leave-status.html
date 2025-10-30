@@ -1,0 +1,556 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>연차관리 시스템 - 연차현황</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/leave-status.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>연차관리 시스템</h1>
+            </div>
+            <nav class="nav">
+                <a href="leave-status.html" class="nav-link active">
+                    <i class="fas fa-calendar-check"></i> 연차현황
+                </a>
+                <a href="calendar.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i> 캘린더
+                </a>
+                <a href="main-management.html" class="nav-link">
+                    <i class="fas fa-cogs"></i> 메인관리
+                </a>
+                <div class="user-dropdown">
+                    <a href="mypage.html" id="profile-link">
+                        <i class="fas fa-user" id="navAvatarIcon"></i> 마이페이지
+                    </a>
+                    <a href="#" id="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> 로그아웃
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h2><i class="fas fa-calendar-check"></i> 연차현황</h2>
+            </div>
+
+            <!-- 개인 연차 현황 대시보드 -->
+            <div class="personal-leave-dashboard">
+                <div class="dashboard-header">
+                    <h3><i class="fas fa-user-circle"></i> 나의 연차 현황</h3>
+                    <div class="header-info">
+                        <div class="info-badge calculation-criteria" id="calculation-criteria">연차계산 : 입사일 기준</div>
+                        <div class="info-badge current-year" id="current-year-display">2024년 기준</div>
+                    </div>
+                </div>
+                
+                <div class="leave-stats-grid">
+                    <div class="leave-stat-card earned">
+                        <div class="stat-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="earned-days">15</h3>
+                            <p>발생 연차</p>
+                            <div class="stat-detail">연간 발생 연차</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card used">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="used-days">3</h3>
+                            <p>사용 연차</p>
+                            <div class="stat-detail">이미 사용한 연차</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card remaining">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="remaining-days">12</h3>
+                            <p>남은 연차</p>
+                            <div class="stat-detail">사용 가능한 연차</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card pending">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pending-days">2</h3>
+                            <p>대기 중</p>
+                            <div class="stat-detail">승인 대기 중인 연차</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 연차 사용률 프로그레스 바 -->
+                <div class="leave-progress">
+                    <div class="progress-header">
+                        <span>연차 사용률</span>
+                        <span id="usage-percentage">20%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 20%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 복지 휴가 현황 대시보드 -->
+            <div class="welfare-leave-dashboard">
+                <div class="dashboard-header">
+                    <h3><i class="fas fa-heart"></i> 나의 복지 휴가 현황</h3>
+                    <div class="header-info">
+                        <div class="info-badge calculation-criteria">복지휴가 : 회사 정책 기준</div>
+                        <div class="info-badge current-year" id="welfare-year-display">2025년 기준</div>
+                    </div>
+                </div>
+                
+                <div class="leave-stats-grid">
+                    <div class="leave-stat-card welfare-earned">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="welfare-earned-days">5</h3>
+                            <p>지급 복지휴가</p>
+                            <div class="stat-detail">연간 지급 복지휴가</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card welfare-used">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="welfare-used-days">2</h3>
+                            <p>사용 복지휴가</p>
+                            <div class="stat-detail">이미 사용한 복지휴가</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card welfare-remaining">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="welfare-remaining-days">3</h3>
+                            <p>남은 복지휴가</p>
+                            <div class="stat-detail">사용 가능한 복지휴가</div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-stat-card welfare-pending">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="welfare-pending-days">0</h3>
+                            <p>대기 중</p>
+                            <div class="stat-detail">승인 대기 중인 복지휴가</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 복지휴가 사용률 프로그레스 바 -->
+                <div class="leave-progress">
+                    <div class="progress-header">
+                        <span>복지휴가 사용률</span>
+                        <span id="welfare-usage-percentage">40%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill welfare-progress-fill" id="welfare-progress-fill" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 나의 연차 활동 섹션 (탭 구조) -->
+            <div class="leave-activity-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-circle"></i> 나의 연차 활동</h3>
+                        <div class="tab-navigation">
+                            <button class="tab-btn active" data-tab="requests">
+                                <i class="fas fa-list-alt"></i> 신청 내역
+                            </button>
+                            <button class="tab-btn" data-tab="monthly">
+                                <i class="fas fa-chart-bar"></i> 월별 현황
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <!-- 신청 내역 탭 -->
+                        <div id="requests-tab" class="tab-content active">
+                            <div class="requests-toolbar">
+                                <div class="requests-pagination-info" id="requests-pagination-info">
+                                    1-10 / 총 0개
+                                </div>
+                                <div class="requests-filters">
+                                    <div class="filter-group">
+                                        <label for="requests-year-selector" class="filter-label">연도</label>
+                                        <select id="requests-year-selector" class="filter-select">
+                                            <option value="2025">2025년</option>
+                                            <option value="2024">2024년</option>
+                                            <option value="2023">2023년</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label for="requests-items-per-page" class="filter-label">표시</label>
+                                        <select id="requests-items-per-page" class="filter-select">
+                                            <option value="5" selected>5개씩</option>
+                                            <option value="10">10개씩</option>
+                                            <option value="20">20개씩</option>
+                                            <option value="50">50개씩</option>
+                                        </select>
+                                    </div>
+                                    <div class="status-filter-group">
+                                        <label class="filter-label">상태</label>
+                                        <div class="status-filter-buttons">
+                                            <button class="filter-btn active" data-status="all">전체</button>
+                                            <button class="filter-btn" data-status="approved">승인됨</button>
+                                            <button class="filter-btn" data-status="rejected">거부됨</button>
+                                            <button class="filter-btn" data-status="pending">대기중</button>
+                                        </div>
+                                    </div>
+                                    <div class="type-filter-group">
+                                        <label class="filter-label">휴가 유형</label>
+                                        <div class="type-filter-buttons">
+                                            <button class="filter-btn active" data-type="all">전체</button>
+                                            <button class="filter-btn" data-type="annual">법정연차</button>
+                                            <button class="filter-btn" data-type="welfare">복지휴가</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="my-requests" class="my-requests-list">
+                                <!-- 내 연차 신청 목록이 여기에 표시됩니다 -->
+                                <div class="empty-state">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    <p>연차 신청 내역이 없습니다.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- 신청 내역 페이지네이션 -->
+                            <div id="requests-pagination" class="requests-pagination" style="display: none;">
+                                <button id="requests-prev-page" class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i> 이전
+                                </button>
+                                <div id="requests-page-numbers" class="page-numbers"></div>
+                                <button id="requests-next-page" class="pagination-btn">
+                                    다음 <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <!-- 필요 없어진 단일 신청 버튼 제거 -->
+                        </div>
+                        
+                        <!-- 월별 현황 탭 -->
+                        <div id="monthly-tab" class="tab-content">
+                            <div class="monthly-chart-container">
+                                <div class="chart-header">
+                                    <h4>월별 연차 사용 현황</h4>
+                                    <div class="year-selector">
+                                        <select id="year-selector">
+                                            <option value="2025">2025년</option>
+                                            <option value="2024">2024년</option>
+                                            <option value="2023">2023년</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="monthly-chart">
+                                    <div class="chart-container">
+                                        <div id="monthly-chart" class="monthly-bars">
+                                            <!-- 월별 연차 사용량 차트가 여기에 표시됩니다 -->
+                                        </div>
+                                        <div class="monthly-chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-color annual"></div>
+                                                <span>법정 연차</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color welfare"></div>
+                                                <span>복지 휴가</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 새 월별 상세 모달 -->
+                                    <div id="month-modal" class="lm-modal" aria-hidden="true">
+                                        <div class="lm-modal-dialog" role="dialog" aria-modal="true">
+                                            <div class="lm-modal-header">
+                                                <h3 id="month-modal-title">월별 상세</h3>
+                                                <button type="button" id="month-modal-close" class="lm-close" aria-label="닫기">&times;</button>
+                                            </div>
+                                            <div class="lm-modal-body" id="month-modal-body"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 연차 신청 섹션 -->
+            <div class="leave-request-section">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-plus"></i> 새 연차 신청</h3>
+                        <span class="view-all-label">빠른 신청</span>
+                    </div>
+                    <div class="card-content">
+                        <form id="leave-request-form" class="leave-request-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="start-date">시작일</label>
+                                    <input type="date" id="start-date" name="startDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="end-date">종료일</label>
+                                    <input type="date" id="end-date" name="endDate" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="leave-type">연차 유형</label>
+                                    <select id="leave-type" name="leaveType" required>
+                                        <option value="">연차 유형을 선택하세요</option>
+                                        <option value="annual">법정연차</option>
+                                        <option value="welfare">복지휴가</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reason-type">사유</label>
+                                    <select id="reason-type" name="reasonType" required>
+                                        <option value="">사유를 선택하세요</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="total-days">총 일수</label>
+                                    <input type="number" id="total-days" name="totalDays" min="0.5" max="30" step="0.5" readonly placeholder="자동 계산됩니다">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" id="reason-group" style="display: none;">
+                                <label for="reason">상세 사유</label>
+                                <textarea id="reason" name="reason" rows="3" placeholder="연차 신청 상세 사유를 입력하세요"></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">
+                                    <i class="fas fa-undo"></i> 초기화
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> 신청하기
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 연차 계획 및 통계 섹션 -->
+            <div class="leave-planning-section">
+                <div class="planning-grid">
+                <!-- 올해 연차 계획 -->
+                <div class="dashboard-card planning-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-plus"></i> 올해 연차 계획</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="planning-stats">
+                            <div class="plan-stat">
+                                <div class="plan-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="plan-content">
+                                    <h4 id="planned-days">5일</h4>
+                                    <p>계획된 연차</p>
+                                </div>
+                            </div>
+                            <div class="plan-stat">
+                                <div class="plan-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="plan-content">
+                                    <h4 id="expiring-days">2일</h4>
+                                    <p>만료 예정</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planning-tips">
+                            <h4>💡 연차 사용 팁</h4>
+                            <ul>
+                                <li>연말까지 <strong>12일</strong>의 연차가 남아있습니다</li>
+                                <li>월 평균 <strong>1.2일</strong>씩 사용하시면 됩니다</li>
+                                <li>연차는 <strong>12월 31일</strong>까지 사용하셔야 합니다</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 연차 사용 패턴 -->
+                <div class="dashboard-card pattern-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-pie"></i> 연차 사용 패턴</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="usage-pattern">
+                            <div class="pattern-item">
+                                <div class="pattern-label">휴가</div>
+                                <div class="pattern-bar">
+                                    <div class="pattern-fill vacation" id="bar-vacation" style="width: 0%"></div>
+                                </div>
+                                <div class="pattern-value" id="bar-vacation-val">0%</div>
+                            </div>
+                            <div class="pattern-item">
+                                <div class="pattern-label">개인사정</div>
+                                <div class="pattern-bar">
+                                    <div class="pattern-fill personal" id="bar-personal" style="width: 0%"></div>
+                                </div>
+                                <div class="pattern-value" id="bar-personal-val">0%</div>
+                            </div>
+                            <div class="pattern-item">
+                                <div class="pattern-label">기타</div>
+                                <div class="pattern-bar">
+                                    <div class="pattern-fill other" id="bar-other" style="width: 0%"></div>
+                                </div>
+                                <div class="pattern-value" id="bar-other-val">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="pending-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>대기 중인 연차 신청</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="pending-list" class="pending-list">
+                    <!-- 대기 중인 연차 신청 목록이 여기에 표시됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 월별 연차 상세 모달 -->
+    <div id="monthly-detail-modal" class="modal">
+        <div class="modal-content monthly-detail-modal">
+            <div class="modal-header">
+                <h3 id="monthly-detail-title">월별 연차 사용 내역</h3>
+                <span class="close" onclick="closeMonthlyDetailModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="monthly-summary">
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <div class="stat-number" id="monthly-total-days">0일</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="stat-number" id="monthly-request-count">0건</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="monthly-requests">
+                    <div class="monthly-requests-header">
+                        <h4>연차 사용 내역</h4>
+                        <div class="status-filter-buttons">
+                            <button class="filter-btn active" data-status="all">전체</button>
+                            <button class="filter-btn" data-status="approved">승인됨</button>
+                            <button class="filter-btn" data-status="rejected">거부됨</button>
+                            <button class="filter-btn" data-status="pending">대기중</button>
+                        </div>
+                    </div>
+                    <div id="monthly-requests-list">
+                        <!-- 해당 월의 연차 사용 내역이 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/nav-permission.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/leave-calculation.js"></script>
+    <script src="js/leave-status.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!AuthGuard.checkAuth()) return;
+            
+            // 데이터 동기화 및 연차현황 초기화
+            const initializeLeaveStatus = () => {
+                if (typeof window.dataManager !== 'undefined' && typeof window.authManager !== 'undefined') {
+                    console.log('연차현황 페이지 - 데이터 동기화 실행');
+                    
+                    // 데이터 일관성 검증 및 동기화
+                    window.authManager.validateAndFixDataConsistency();
+                    window.authManager.forceSyncUsersToEmployees();
+                    
+                    // 연차현황 클래스 초기화
+                    if (typeof LeaveStatus !== 'undefined') {
+                        window.leaveStatus = new LeaveStatus();
+                        console.log('연차현황 페이지 초기화 완료');
+                    } else {
+                        console.error('LeaveStatus 클래스를 찾을 수 없습니다.');
+                    }
+                } else {
+                    console.log('dataManager 또는 authManager 로드 대기 중...');
+                    setTimeout(initializeLeaveStatus, 100);
+                }
+            };
+            
+            initializeLeaveStatus();
+            
+            const user = AuthGuard.getCurrentUser();
+            if (user && document.getElementById('user-name')) {
+                document.getElementById('user-name').textContent = user.name;
+            }
+            
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm('정말 로그아웃하시겠습니까?')) {
+                        window.authManager.logout();
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
