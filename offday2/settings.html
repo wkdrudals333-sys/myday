@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>�������� �ý��� - ����</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/settings.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>�������� �ý���</h1>
+            </div>
+                        <nav class="nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i> ��ú���
+                </a>
+                <a href="leave-status.html" class="nav-link">
+                    <i class="fas fa-calendar-plus"></i> ������û
+                </a>
+                <a href="employee-management.html" class="nav-link">
+                    <i class="fas fa-users"></i> ��������
+                </a>
+                <a href="statistics.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i> ���
+                </a>
+                <a href="settings.html" class="nav-link active">
+                    <i class="fas fa-cog"></i> ����
+                </a>
+                    <div class="user-dropdown">
+                        <a href="mypage.html" id="profile-link">
+                            <i class="fas fa-user"></i> ����������
+                        </a>
+                        <a href="#" id="logout-link">
+                            <i class="fas fa-sign-out-alt"></i> �α׾ƿ�
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h2><i class="fas fa-cog"></i> �ý��� ����</h2>
+                <p>�������� �ý����� ������ �����ϼ���</p>
+            </div>
+
+            <div class="settings-container">
+                <!-- �Ϲ� ���� -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="icon general">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <div>
+                            <h3>�Ϲ� ����</h3>
+                            <p>�ý����� �⺻ ������ �����մϴ�</p>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>�ڵ� ����</h4>
+                                <p>��������� �ڵ����� �����մϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="auto-save" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>�˸� ǥ��</h4>
+                                <p>�ý��� �˸��� ǥ���մϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="show-notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>��ũ ���</h4>
+                                <p>��ο� �׸��� ����մϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="dark-mode">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ���� ���� -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="icon leave">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <h3>���� ����</h3>
+                            <p>���� ���� �⺻ ������ �����մϴ�</p>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>�⺻ ���� �ϼ�</h4>
+                                <p>�ű� ������ �⺻ ���� �ϼ��Դϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="number" id="default-leave-days" value="15" min="1" max="30">
+                                <span>��</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>���� ��û ����</h4>
+                                <p>�� ���� ��û�� �� �ִ� �ִ� ���� �ϼ��Դϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="number" id="max-leave-days" value="10" min="1" max="30">
+                                <span>��</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>���� ��û �Ⱓ</h4>
+                                <p>���� ��� �� �ּ� ��û �Ⱓ�Դϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="number" id="advance-notice" value="3" min="0" max="30">
+                                <span>��</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ȸ�� ���� -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="icon company">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h3>ȸ�� ����</h3>
+                            <p>ȸ�� �⺻ ������ �����մϴ�</p>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>ȸ���</h4>
+                                <p>�������� �ý��ۿ� ǥ�õ� ȸ����Դϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="text" id="company-name" value="�츮ȸ��" placeholder="ȸ����� �Է��ϼ���">
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>�ٹ� �ð�</h4>
+                                <p>�⺻ �ٹ� �ð��� �����մϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="text" id="work-hours" value="09:00 - 18:00" placeholder="�ٹ� �ð�">
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>�ٹ���</h4>
+                                <p>�ְ� �ٹ����� �����մϴ�</p>
+                            </div>
+                            <div class="setting-control">
+                                <select id="work-days">
+                                    <option value="��-��">������ - �ݿ���</option>
+                                    <option value="��-��">������ - �����</option>
+                                    <option value="ȭ-��">ȭ���� - �����</option>
+                                    <option value="��-��">������ - �Ͽ���</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ������ ���� -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="icon data">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <h3>������ ����</h3>
+                            <p>�ý��� �����͸� ����ϰ� �����մϴ�</p>
+                        </div>
+                    </div>
+
+                    <div class="data-management">
+                        <div class="data-card">
+                            <div class="icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <h4>������ ��������</h4>
+                            <p>��� �����͸� JSON ���Ϸ� �������ϴ�</p>
+                            <button class="btn btn-primary" onclick="exportAllData()">
+                                <i class="fas fa-download"></i> ��������
+                            </button>
+                        </div>
+
+                        <div class="data-card">
+                            <div class="icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <h4>������ ��������</h4>
+                            <p>JSON ���Ͽ��� �����͸� �����ɴϴ�</p>
+                            <button class="btn btn-secondary" onclick="importData()">
+                                <i class="fas fa-upload"></i> ��������
+                            </button>
+                        </div>
+
+                        <div class="data-card">
+                            <div class="icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <h4>������ �ʱ�ȭ</h4>
+                            <p>��� �����͸� �����ϰ� �ʱ�ȭ�մϴ�</p>
+                            <button class="btn btn-danger" onclick="resetAllData()">
+                                <i class="fas fa-trash-alt"></i> �ʱ�ȭ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ���� ��ư -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> ���� ����
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i> �⺻������ ����
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ���� �Է� (����) -->
+    <input type="file" id="file-input" accept=".json" style="display: none;">
+
+    <script src="js/data-manager.js"></script>
+    <script src="js/settings.js"></script>
+
+    <script src="js/auth.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!AuthGuard.checkAuth()) return;
+            document.getElementById('logout-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('�α׾ƿ� �Ͻðڽ��ϱ�?')) {
+                    window.authManager.logout();
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연차관리 시스템 - 캘린더</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/calendar.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>연차관리 시스템</h1>
+            </div>
+            <nav class="nav">
+                <a href="leave-status.html" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> 연차현황
+                </a>
+                <a href="calendar.html" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i> 캘린더
+                </a>
+                <a href="main-management.html" class="nav-link">
+                    <i class="fas fa-cogs"></i> 메인관리
+                </a>
+                <div class="user-dropdown">
+                    <a href="mypage.html" id="profile-link">
+                        <i class="fas fa-user" id="navAvatarIcon"></i> 마이페이지
+                    </a>
+                    <a href="#" id="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> 로그아웃
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h2><i class="fas fa-calendar-alt"></i> 전체 연차 캘린더</h2>
+                <p>모든 지점의 연차 및 복지휴가 일정을 확인하세요</p>
+            </div>
+
+            <!-- 캘린더 컨트롤 -->
+            <div class="calendar-controls">
+                <div class="toolbar-top">
+                    <div class="nav-buttons">
+                        <button id="prevMonth" class="btn btn-secondary" aria-label="이전 달">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="todayBtn" class="btn btn-primary">
+                            <i class="fas fa-home"></i> 오늘
+                        </button>
+                        <button id="nextMonth" class="btn btn-secondary" aria-label="다음 달">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <h3 id="currentMonth" class="current-month">2025년 10월</h3>
+                    <!-- 연도/월 선택 모달 - Windows 스타일 -->
+                    <div id="datePickerModal" class="modal" style="display: none;">
+                        <div class="modal-content windows-calendar-modal" style="max-width: 320px;">
+                            <div class="modal-header windows-calendar-header">
+                                <button type="button" class="close-btn" id="closeDatePickerModal">&times;</button>
+                            </div>
+                            <div class="modal-body windows-calendar-body">
+                                <div class="windows-calendar-nav">
+                                    <button type="button" class="calendar-nav-btn" id="prevDecade">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <div class="calendar-year-range" id="yearRange">2020 - 2029</div>
+                                    <button type="button" class="calendar-nav-btn" id="nextDecade">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-year-grid" id="yearGrid">
+                                    <!-- JavaScript로 동적 생성 -->
+                                </div>
+                                <div class="calendar-month-grid" id="monthGrid">
+                                    <div class="calendar-month-item" data-month="0">1월</div>
+                                    <div class="calendar-month-item" data-month="1">2월</div>
+                                    <div class="calendar-month-item" data-month="2">3월</div>
+                                    <div class="calendar-month-item" data-month="3">4월</div>
+                                    <div class="calendar-month-item" data-month="4">5월</div>
+                                    <div class="calendar-month-item" data-month="5">6월</div>
+                                    <div class="calendar-month-item" data-month="6">7월</div>
+                                    <div class="calendar-month-item" data-month="7">8월</div>
+                                    <div class="calendar-month-item" data-month="8">9월</div>
+                                    <div class="calendar-month-item" data-month="9">10월</div>
+                                    <div class="calendar-month-item" data-month="10">11월</div>
+                                    <div class="calendar-month-item" data-month="11">12월</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toolbar-actions">
+                        <button id="addLeaveBtn" class="btn btn-success">
+                            <i class="fas fa-plus"></i> 연차 신청
+                        </button>
+                    </div>
+                </div>
+
+                <div class="toolbar-filters">
+                    <div class="filter-group">
+                        <label for="branchFilter">지점</label>
+                        <select id="branchFilter">
+                            <option value="all">전체 지점</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="teamFilter">팀</label>
+                        <select id="teamFilter">
+                            <option value="all">전체 팀</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="typeFilter">휴가 유형</label>
+                        <select id="typeFilter">
+                            <option value="all">전체</option>
+                            <option value="annual">법정연차</option>
+                            <option value="welfare">복지휴가</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter">상태</label>
+                        <select id="statusFilter">
+                            <option value="all">전체</option>
+                            <option value="approved">승인됨</option>
+                            <option value="pending">대기중</option>
+                            <option value="rejected">거부됨</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 캘린더와 범례 레이아웃 -->
+            <div class="calendar-layout">
+                <!-- 통합 범례 (왼쪽) -->
+                <div class="unified-legend">
+                    <h4>캘린더 범례</h4>
+                    <div class="legend-sections-vertical">
+                        <!-- 연차 상태 섹션 -->
+                        <div class="legend-section">
+                            <h5>연차 상태</h5>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <div class="legend-status-box approved">승인됨</div>
+                                    <span class="legend-description">실선으로 표시</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-status-box pending">대기중</div>
+                                    <span class="legend-description">점선으로 표시</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 지점별 색상 섹션 -->
+                        <div class="legend-section">
+                            <h5>지점별 색상</h5>
+                            <div class="legend-items" id="branchLegend">
+                                <!-- 지점별 색상 범례가 여기에 동적으로 생성됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FullCalendar 컨테이너 (오른쪽) -->
+                <div class="calendar-container">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 연차 신청 모달 -->
+    <div id="leaveRequestModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>연차 신청</h3>
+                <button type="button" class="close-btn" id="closeLeaveRequestModal">&times;</button>
+            </div>
+            <form id="leaveRequestForm" class="modal-body">
+                <div class="form-group">
+                    <label for="leaveType">연차 유형</label>
+                    <select id="leaveType" name="leaveType" required>
+                        <option value="">연차 유형을 선택하세요</option>
+                        <option value="annual">법정연차</option>
+                        <option value="welfare">복지휴가</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reasonType">사유</label>
+                    <select id="reasonType" name="reasonType" required>
+                        <option value="">사유를 선택하세요</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="startDate">시작일</label>
+                    <input type="date" id="startDate" name="startDate" required min="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="endDate">종료일</label>
+                    <input type="date" id="endDate" name="endDate" required min="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="days">일수</label>
+                    <input type="number" id="days" name="days" min="0.5" max="30" step="0.5" readonly placeholder="자동 계산됩니다">
+                </div>
+                
+                <div class="form-group" id="reason-group" style="display: none;">
+                    <label for="reason">상세 사유</label>
+                    <textarea id="reason" name="reason" rows="3" placeholder="연차 신청 상세 사유를 입력하세요"></textarea>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelLeaveRequest">취소</button>
+                    <button type="submit" class="btn btn-primary">신청</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 연차 상세 정보 모달 -->
+    <div id="leaveDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="leaveDetailTitle">연차 상세 정보</h3>
+                <span class="close" id="closeLeaveDetailModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="leaveDetailContent">
+                    <!-- 연차 상세 정보가 여기에 동적으로 생성됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/ko.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/nav-permission.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/calendar.js"></script>
+    <script>
+        // 페이지 로드 후 아바타 아이콘 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (window.authManager && window.authManager.initializeNavAvatar) {
+                    window.authManager.initializeNavAvatar();
+                }
+            }, 300);
+        });
+    </script>
+</body>
+</html>
+

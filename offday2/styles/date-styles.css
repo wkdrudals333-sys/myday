@@ -1,0 +1,62 @@
+﻿/* 날짜 입력 필드 스타일 */
+.form-group input[type="date"] {
+    color-scheme: light;
+    font-family: inherit;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+/* 필수 표시 스타일 */
+.required-notice {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 0.25rem;
+}
+
+/* 필드 안내 메시지 */
+.field-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.4;
+}
+
+.field-notice i {
+    color: #667eea;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+/* 다크 모드에서 날짜 입력 필드 */
+@media (prefers-color-scheme: dark) {
+    .form-group input[type="date"] {
+        color-scheme: dark;
+    }
+    
+    .field-notice {
+        background: rgba(102, 126, 234, 0.15);
+        color: #bdc3c7;
+    }
+    
+    .field-notice i {
+        color: #667eea;
+    }
+}

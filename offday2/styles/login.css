@@ -1,0 +1,1183 @@
+﻿/* 로그인/회원가입 통합 최적화 - 코넬플라워 블루 기반 디자인 */
+
+/* 코넬플라워 블루 색상 팔레트 */
+:root {
+    --cornflower-blue-primary: #6A82E0;
+    --cornflower-blue-secondary: #7B8CE8;
+    --cornflower-blue-light: #8B9AEF;
+    --cornflower-blue-lighter: #A5B2F5;
+    --cornflower-blue-lightest: #E8EDF7;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --success: #10b981;
+    --error: #ef4444;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { 
+        opacity: 0; 
+        transform: translateX(-50%) translateY(-100px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(-50%) translateY(0); 
+    }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 1; 
+        transform: translateX(-50%) translateY(0); 
+    }
+    to { 
+        opacity: 0; 
+        transform: translateX(-50%) translateY(-100px); 
+    }
+}
+
+@keyframes progressBar {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* 성공 메시지 스타일 */
+.success-content {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+.success-icon {
+    margin-right: 16px;
+    font-size: 24px;
+    animation: pulse 2s infinite;
+}
+
+.success-text h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.success-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.success-progress {
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.success-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+    animation: progressBar 4s linear;
+}
+
+.error-content {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+.error-icon {
+    margin-right: 16px;
+    font-size: 24px;
+}
+
+.error-text h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.error-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* 필드 상태 스타일 */
+.form-input.error {
+    border-color: #e74c3c !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.form-input.success {
+    border-color: #27ae60 !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
+}
+
+/* 성공 메시지 스타일 */
+.success-message {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(39, 174, 96, 0.1);
+    border-left: 4px solid #27ae60;
+    border-radius: 4px;
+    color: #27ae60;
+    font-size: 14px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.success-message::before {
+    content: "✓";
+    margin-right: 8px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* 에러 메시지 스타일 */
+.error-message {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid #e74c3c;
+    border-radius: 4px;
+    color: #e74c3c;
+    font-size: 14px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.error-message::before {
+    content: "✗";
+    margin-right: 8px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--cornflower-blue-primary) 0%, var(--cornflower-blue-secondary) 50%, var(--cornflower-blue-light) 100%);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 배경 애니메이션 효과 */
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-xl);
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideDown 0.6s ease-out;
+.login-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.login-header {
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 
+        0 12px 30px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-logo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+}
+
+.login-title {
+    color: var(--cornflower-blue-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+    text-align: center;
+}
+
+.login-subtitle {
+    color: var(--gray-600);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.form-group {
+    text-align: left;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+/* 입력 필드 컨테이너 */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem 1.1rem 1rem 3rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafbfc;
+    color: #2c3e50;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* select 박스 스타일 */
+.form-group select {
+    width: 100%;
+    padding: 1rem 1.1rem 1rem 3rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafbfc;
+    color: #2c3e50;
+    box-sizing: border-box;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237f8c8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+}
+
+/* 날짜 입력 필드 스타일 */
+.form-group input[type="text"][maxlength="10"] {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+    padding-right: 4rem; /* 날짜 선택기 버튼 공간 확보 */
+}
+
+/* 날짜 선택기 버튼 스타일 */
+.date-picker-btn {
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-picker-btn:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* 필수 표시 스타일 */
+.required-notice {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 0.25rem;
+}
+
+/* 필드 안내 메시지 */
+.field-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.4;
+}
+
+.field-notice i {
+    color: #667eea;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #667eea;
+    outline: none;
+    background-color: white;
+    box-shadow: 
+        0 0 0 4px rgba(102, 126, 234, 0.1),
+        0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+.form-group input::placeholder {
+    color: #adb5bd;
+    font-weight: 400;
+}
+
+.form-group select option {
+    padding: 0.5rem;
+    background-color: white;
+    color: #2c3e50;
+}
+
+/* 생년월일/입사연월일 입력 필드 스타일 */
+.form-group input[type="text"][maxlength="8"] {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+/* 아이콘 정렬 개선 */
+.input-icon {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-group input:focus ~ .input-icon,
+.form-group select:focus ~ .input-icon {
+    color: #667eea;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.2rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+.remember-me label {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #6c757d;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.forgot-password {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+}
+
+.forgot-password:hover {
+    color: #764ba2;
+    background: rgba(102, 126, 234, 0.1);
+    text-decoration: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 8px 25px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 35px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-button .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.login-button.loading .spinner {
+    display: block;
+}
+
+.login-button.loading .button-text {
+    opacity: 0.8;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #dc3545;
+    display: none;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.error-message.show {
+    display: flex;
+    animation: slideDown 0.4s ease;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #28a745;
+    display: none;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.success-message.show {
+    display: flex;
+    animation: slideDown 0.4s ease;
+}
+
+.login-footer {
+    margin-top: 2rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.login-footer p {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+}
+
+.login-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    color: #667eea;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.security-badge i {
+    font-size: 1rem;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 애니메이션 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+.login-card.shake {
+    animation: shake 0.6s ease;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1rem;
+    }
+    
+    .login-card {
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+        max-width: 100%;
+    }
+    
+    .login-title {
+        font-size: 1.6rem;
+    }
+    
+    .login-options {
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: stretch;
+    }
+    
+    .remember-me {
+        justify-content: center;
+    }
+    
+    .forgot-password {
+        text-align: center;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+    }
+    
+    .form-group select {
+        padding-right: 2.8rem;
+    }
+    
+    .form-group input[type="text"][maxlength="10"] {
+        padding-right: 3.8rem; /* 모바일에서 날짜 선택기 버튼 공간 */
+    }
+    
+    .input-icon {
+        left: 0.9rem;
+    }
+    
+    .password-toggle,
+    .date-picker-btn {
+        right: 0.9rem;
+    }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+    .login-card {
+        background: rgba(44, 62, 80, 0.95);
+        color: white;
+    }
+    
+    .login-title {
+        color: white;
+    }
+    
+    .form-group label {
+        color: #ecf0f1;
+    }
+    
+    .form-group input,
+    .form-group select {
+        background-color: rgba(52, 73, 94, 0.8);
+        border-color: #4a5f7a;
+        color: white;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+        background-color: rgba(44, 62, 80, 0.9);
+        border-color: #667eea;
+    }
+    
+    .form-group select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bdc3c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+    
+    .form-group select option {
+        background-color: rgba(44, 62, 80, 0.9);
+        color: white;
+    }
+    
+    .date-picker-btn {
+        color: #bdc3c7;
+    }
+    
+    .date-picker-btn:hover {
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.15);
+    }
+    
+    .field-notice {
+        background: rgba(102, 126, 234, 0.15);
+        color: #bdc3c7;
+    }
+    
+    .field-notice i {
+        color: #667eea;
+    }
+    
+    .login-footer {
+        border-top-color: #4a5f7a;
+    }
+    
+    .login-footer p {
+        color: #bdc3c7;
+    }
+}
+
+/* 비밀번호 보안 강도 표시 */
+.password-strength {
+    margin-top: 0.5rem;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-fill.weak {
+    width: 25%;
+    background: linear-gradient(90deg, #dc3545, #fd7e14);
+}
+
+.strength-fill.fair {
+    width: 50%;
+    background: linear-gradient(90deg, #fd7e14, #ffc107);
+}
+
+.strength-fill.good {
+    width: 75%;
+    background: linear-gradient(90deg, #ffc107, #28a745);
+}
+
+.strength-fill.strong {
+    width: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+.strength-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.strength-text.weak {
+    color: #dc3545;
+}
+
+.strength-text.fair {
+    color: #fd7e14;
+}
+
+.strength-text.good {
+    color: #ffc107;
+}
+
+.strength-text.strong {
+    color: #28a745;
+}
+
+.password-requirements {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.requirement:last-child {
+    margin-bottom: 0;
+}
+
+.requirement i {
+    width: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.requirement.valid {
+    color: #28a745;
+}
+
+.requirement.valid i {
+    color: #28a745;
+}
+
+.requirement.invalid {
+    color: #6c757d;
+}
+
+.requirement.invalid i {
+    color: #dc3545;
+}
+
+/* 다크모드에서 비밀번호 요구사항 스타일 */
+@media (prefers-color-scheme: dark) {
+    .password-requirements {
+        background: rgba(52, 73, 94, 0.8);
+        border-color: #4a5f7a;
+    }
+    
+    .requirement.invalid {
+        color: #bdc3c7;
+    }
+}
+
+/* 비밀번호 찾기 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 5% auto;
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header .close {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-header .close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 2rem;
+    background: white;
+    border-radius: 0 0 20px 20px;
+}
+
+.forgot-password-form {
+    text-align: center;
+}
+
+.modal-description {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.temp-password-result {
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 3rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.result-message {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.temp-password-display {
+    margin-bottom: 2rem;
+}
+
+.temp-password-display label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.password-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 2px;
+    background: #f8f9fa;
+    color: #495057;
+}
+
+.copy-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+}
+
+.copy-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .password-container {
+        flex-direction: column;
+    }
+    
+    .copy-btn {
+        width: 100%;
+    }
+}

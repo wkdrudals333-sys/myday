@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - OffDay</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mypage.css">
+    <link rel="stylesheet" href="styles/forms.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>연차관리 시스템</h1>
+            </div>
+            <nav class="nav">
+                <a href="leave-status.html" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> 연차현황
+                </a>
+                <a href="calendar.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i> 캘린더
+                </a>
+                <a href="main-management.html" class="nav-link">
+                    <i class="fas fa-cogs"></i> 메인관리
+                </a>
+                <div class="user-dropdown">
+                    <a href="mypage.html" class="nav-link active">
+                        <i class="fas fa-user" id="navAvatarIcon"></i> 마이페이지
+                    </a>
+                    <a href="#" id="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> 로그아웃
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h2><i class="fas fa-user"></i> 마이페이지</h2>
+            </div>
+            
+            <!-- 프로필 섹션 -->
+            <section class="profile-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-id-card"></i> 프로필 관리</h3>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-image-container">
+                        <div class="profile-image" id="profileImage">
+                            <img src="" alt="프로필 이미지" id="profileImg" style="display: none;">
+                            <div class="default-avatar" id="defaultAvatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                        </div>
+                        <div class="profile-image-actions">
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                            <button class="btn btn-secondary" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-camera"></i> 사진 변경
+                            </button>
+                            <button class="btn btn-danger" onclick="removeProfileImage()">
+                                <i class="fas fa-trash"></i> 사진 삭제
+                            </button>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="info-item">
+                            <label><i class="fas fa-user"></i> 이름:</label>
+                            <span id="displayName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-building"></i> 소속지점:</label>
+                            <span id="displayBranch">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-users"></i> 팀/부서:</label>
+                            <span id="displayDepartment">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-user-tie"></i> 직급:</label>
+                            <span id="displayPosition">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-calendar"></i> 입사일:</label>
+                            <span id="displayHireDate">-</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 개인정보 변경 섹션 -->
+            <section class="personal-info-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-edit"></i> 개인정보 변경</h3>
+                    <button class="btn btn-primary" id="editInfoBtn" onclick="toggleEditMode()">
+                        <i class="fas fa-edit"></i> 정보 수정
+                    </button>
+                </div>
+                
+                <form class="personal-info-form" id="personalInfoForm" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="editName"><i class="fas fa-user"></i> 이름 *</label>
+                            <input type="text" id="editName" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editEmail"><i class="fas fa-envelope"></i> 이메일 *</label>
+                            <input type="email" id="editEmail" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editPhone"><i class="fas fa-phone"></i> 전화번호 *</label>
+                            <input type="tel" id="editPhone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editBranch"><i class="fas fa-building"></i> 소속지점 *</label>
+                            <select id="editBranch" name="branch" required>
+                                <option value="">소속지점을 선택하세요</option>
+                                <!-- 지점 데이터가 동적으로 로드됩니다 -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editDepartment"><i class="fas fa-users"></i> 팀/부서 *</label>
+                            <select id="editDepartment" name="department" required disabled>
+                                <option value="">먼저 지점을 선택하세요</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editPosition"><i class="fas fa-user-tie"></i> 직급 *</label>
+                            <select id="editPosition" name="position" required>
+                                <option value="">직급을 선택하세요</option>
+                                <option value="매니저">매니저</option>
+                                <option value="주임">주임</option>
+                                <option value="대리">대리</option>
+                                <option value="과장">과장</option>
+                                <option value="차장">차장</option>
+                                <option value="부장">부장</option>
+                                <option value="팀장">팀장</option>
+                                <option value="실장">실장</option>
+                                <option value="이사">이사</option>
+                                <option value="상무">상무</option>
+                                <option value="전무">전무</option>
+                                <option value="대표이사">대표이사</option>
+                                <option value="사장">사장</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editHireDate"><i class="fas fa-calendar"></i> 입사일 *</label>
+                            <input type="date" id="editHireDate" name="hireDate" readonly disabled>
+                            <div class="form-help">
+                                <small><i class="fas fa-info-circle"></i> 입사일 변경이 필요한 경우 관리자에게 문의해주세요.</small>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label for="editBirthDate"><i class="fas fa-birthday-cake"></i> 생년월일</label>
+                            <input type="date" id="editBirthDate" name="birthDate">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                            <i class="fas fa-times"></i> 취소
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 정보 저장
+                        </button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- 비밀번호 변경 섹션 -->
+            <section class="password-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-lock"></i> 비밀번호 변경</h3>
+                </div>
+                
+                <form class="password-form" id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword"><i class="fas fa-key"></i> 현재 비밀번호 *</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword"><i class="fas fa-lock"></i> 새 비밀번호 *</label>
+                        <input type="password" id="newPassword" name="newPassword" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword"><i class="fas fa-lock"></i> 새 비밀번호 확인 *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 비밀번호 변경
+                        </button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- 휴가 정보 섹션 -->
+            <section class="leave-info-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-calendar-check"></i> 휴가 정보</h3>
+                    <div class="section-tools" id="leaveCriteriaBadge" title="연차 계산 기준">
+                        <i class="fas fa-calculator"></i>
+                        <span id="leaveCriteriaText">-</span>
+                    </div>
+                </div>
+                
+                <div class="leave-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">총 연차</div>
+                        <div class="stat-value" id="totalLeave">0일</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">사용한 연차</div>
+                        <div class="stat-value" id="usedLeave">0일</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">남은 연차</div>
+                        <div class="stat-value" id="remainingLeave">0일</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 최근 휴가 신청 내역 -->
+            <section class="recent-leave-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-history"></i> 최근 휴가 신청 내역</h3>
+                    <a href="leave-status.html" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> 휴가 신청하기
+                    </a>
+                </div>
+                
+                <div class="leave-history" id="leaveHistory">
+                    <div class="no-data">휴가 신청 내역이 없습니다.</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 알림 메시지 -->
+    <div class="notification" id="notification">
+        <span class="notification-message" id="notificationMessage"></span>
+        <button class="notification-close" onclick="hideNotification()">&times;</button>
+    </div>
+
+    <script src="js/data-manager.js"></script>
+    <script src="js/leave-calculation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/nav-permission.js"></script>
+    <script src="js/mypage.js"></script>
+</body>
+</html>
+
+
